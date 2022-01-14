@@ -90,4 +90,11 @@ public class BowlingGameTest {
 
         assertThat(game.score()).isEqualTo(20);
     }
+
+    @Test
+    void rollWithTooManyPinsShouldReturnZero() {
+        fullGame(20, 20);
+
+        assertThat(game.score()).isEqualTo(0);
+    }
 }
