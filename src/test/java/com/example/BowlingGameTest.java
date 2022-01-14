@@ -34,4 +34,15 @@ public class BowlingGameTest {
         fullGame(17, 0);
         assertThat(game.score()).isEqualTo(20);
     }
+
+    @Test
+    void fullGameWithTwoSparesShouldReturnThirtyFive() {
+        game.roll(5);
+        game.roll(5);
+        game.roll(5);
+        game.roll(5);
+        game.roll(5);
+        fullGame(15, 0);
+        assertThat(game.score()).isEqualTo(35);
+    }
 }
