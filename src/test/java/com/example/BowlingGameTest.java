@@ -6,24 +6,23 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BowlingGameTest {
+    Game game = new Game();
+
+    private void fullGame(int rolls, int pins) {
+        for (int i = 0; i < rolls; i++) {
+            game.roll(pins);
+        }
+    }
 
     @Test
     void fullGameNoScoreShouldReturnZero() {
-        Game game = new Game();
-
-        for (int i = 0; i < 20; i++) {
-            game.roll(0);
-        }
+        fullGame(20, 0);
         assertThat(game.score()).isEqualTo(0);
     }
 
     @Test
     void fullGameAllOnesShouldReturnTwenty() {
-        Game game = new Game();
-
-        for (int i = 0; i < 20; i++) {
-            game.roll(1);
-        }
+        fullGame(20, 1);
         assertThat(game.score()).isEqualTo(20);
     }
 }
