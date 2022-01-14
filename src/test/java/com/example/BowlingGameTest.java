@@ -25,4 +25,13 @@ public class BowlingGameTest {
         fullGame(20, 1);
         assertThat(game.score()).isEqualTo(20);
     }
+
+    @Test
+    void fullGameWithOneSpareShouldReturnTwenty() {
+        game.roll(5);
+        game.roll(5);
+        game.roll(5);
+        fullGame(17, 0);
+        assertThat(game.score()).isEqualTo(20);
+    }
 }
