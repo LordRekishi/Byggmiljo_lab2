@@ -10,21 +10,21 @@ public class StringCalculator {
         if (numbers.equals("")) {
             return 0;
         }
-        
         if (numbers.startsWith("//")) {
             delimiter = numbers.charAt(2) + "|\n";
         }
 
         return getSum(numbers, delimiter);
-
     }
 
     private int getSum(String numbers, String delimiter) {
         int sum;
+
         sum = Stream.of(numbers.split(delimiter))
                 .filter(this::isNumeric)
                 .mapToInt(Integer::parseInt)
                 .sum();
+
         return sum;
     }
 
