@@ -13,6 +13,17 @@ public class StringCalculator {
         if (numbers.startsWith("//")) {
             delimiter = numbers.charAt(2) + "|\n";
         }
+        if (numbers.contains("-")) {
+            StringBuilder negatives = new StringBuilder();
+
+            negatives.append("( ");
+            Stream.of(numbers.split(delimiter))
+                    .filter(s -> s.contains("-"))
+                    .forEach(s -> negatives.append(s).append(" "));
+            negatives.append(")");
+
+            throw new RuntimeException("Negatives " + negatives + " not allowed");
+        }
 
         return getSum(numbers, delimiter);
     }
