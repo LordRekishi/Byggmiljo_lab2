@@ -34,4 +34,11 @@ public class StringCalculatorTest {
 
         assertThat(result).isEqualTo(5);
     }
+
+    @Test
+    void addNumbersWithEscapeCharactersShouldReturnSix() {
+        int result = stringCalculator.add("1\n2,3");
+
+        assertThat(result).isEqualTo(6);
+    }
 }
