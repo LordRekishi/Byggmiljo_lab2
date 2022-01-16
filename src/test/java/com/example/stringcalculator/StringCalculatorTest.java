@@ -27,4 +27,11 @@ public class StringCalculatorTest {
 
         assertThat(result).isEqualTo(3);
     }
+
+    @Test
+    void addFiveNumbersShouldReturnFive() {
+        int result = stringCalculator.add("1,1,1,1,1");
+
+        assertThat(result).isEqualTo(5);
+    }
 }

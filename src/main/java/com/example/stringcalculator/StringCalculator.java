@@ -6,11 +6,24 @@ public class StringCalculator {
 
         if (numbers.equals("")) {
             return 0;
-        } else if (numbers.contains(",")) {
-            return Integer.parseInt(numbers.substring(0, 1)) + Integer.parseInt(numbers.substring(2, 3));
         } else {
-            return Integer.parseInt(numbers);
+            int sum = 0;
+            for (char c : numbers.toCharArray()) {
+                if (isNumeric(c))
+                    sum += Integer.parseInt(String.valueOf(c));
+            }
+            return sum;
         }
 
+    }
+
+    private boolean isNumeric(char input) {
+
+        try {
+            Integer.parseInt(String.valueOf(input));
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
     }
 }
