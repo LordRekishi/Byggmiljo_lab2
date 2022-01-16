@@ -20,4 +20,11 @@ public class StringCalculatorTest {
 
         assertThat(result).isEqualTo(1);
     }
+
+    @Test
+    void addTwoNumbersShouldReturnThree() {
+        int result = stringCalculator.add("1,2");
+
+        assertThat(result).isEqualTo(3);
+    }
 }
