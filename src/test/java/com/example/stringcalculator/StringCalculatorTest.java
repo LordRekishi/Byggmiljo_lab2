@@ -41,4 +41,11 @@ public class StringCalculatorTest {
 
         assertThat(result).isEqualTo(6);
     }
+
+    @Test
+    void changeDelimiterShouldReturnThirteen() {
+        int result = stringCalculator.add("//;\n11;2");
+
+        assertThat(result).isEqualTo(13);
+    }
 }
