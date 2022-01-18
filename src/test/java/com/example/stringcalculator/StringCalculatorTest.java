@@ -60,4 +60,11 @@ public class StringCalculatorTest {
     void addMultipleNegativesShouldThrowExceptionAndListAllNegatives() {
         assertThatThrownBy(() -> stringCalculator.add("-1,-1,2,3,-2")).hasMessageContaining("Negatives ( -1 -1 -2 ) not allowed");
     }
+
+    @Test
+    void addNumberLargerThan1000ShouldNotCount() {
+        int result = stringCalculator.add("//;2;3;1000;1001");
+
+        assertThat(result).isEqualTo(1005);
+    }
 }

@@ -10,18 +10,13 @@ public class StringCalculator {
         if (numbers.equals("")) {
             return 0;
         }
+
         if (numbers.startsWith("//")) {
             delimiter = numbers.charAt(2) + "|\n";
         }
+
         if (numbers.contains("-")) {
-            StringBuilder negatives = new StringBuilder();
-
-            negatives.append("( ");
-            Stream.of(numbers.split(delimiter))
-                    .filter(s -> s.contains("-"))
-                    .forEach(s -> negatives.append(s).append(" "));
-            negatives.append(")");
-
+            StringBuilder negatives = getStringOfNegatives(numbers, delimiter);
             throw new RuntimeException("Negatives " + negatives + " not allowed");
         }
 
@@ -29,14 +24,23 @@ public class StringCalculator {
     }
 
     private int getSum(String numbers, String delimiter) {
-        int sum;
-
-        sum = Stream.of(numbers.split(delimiter))
+        return Stream.of(numbers.split(delimiter))
                 .filter(this::isNumeric)
                 .mapToInt(Integer::parseInt)
+                .filter(value -> value <= 1000)
                 .sum();
+    }
 
-        return sum;
+    private StringBuilder getStringOfNegatives(String numbers, String delimiter) {
+        StringBuilder negatives = new StringBuilder();
+
+        negatives.append("( ");
+        Stream.of(numbers.split(delimiter))
+                .filter(s -> s.contains("-"))
+                .forEach(s -> negatives.append(s).append(" "));
+        negatives.append(")");
+
+        return negatives;
     }
 
     private boolean isNumeric(String input) {
@@ -48,6 +52,7 @@ public class StringCalculator {
         } catch (NumberFormatException e) {
             return false;
         }
+
         return true;
     }
 }
