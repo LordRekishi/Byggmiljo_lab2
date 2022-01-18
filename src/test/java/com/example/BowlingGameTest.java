@@ -2,8 +2,15 @@ package com.example;
 
 import com.example.bowling.Game;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.List;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BowlingGameTest {
     Game game = new Game();
@@ -96,5 +103,37 @@ public class BowlingGameTest {
         fullGame(20, 20);
 
         assertThat(game.score()).isEqualTo(0);
+    }
+
+    @Test
+    void rollSpareThenStrikeShouldReturnTwentyfive() {
+        game.roll(5);
+        game.roll(5);
+        game.roll(10);
+        fullGame(16, 1);
+
+        assertThat(game.score()).isEqualTo(48);
+    }
+
+    @ParameterizedTest
+    @MethodSource("framesProvider")
+    void validNumberOfThrowsShouldGiveCorrectScore(List<Integer> pins, int result) {
+        Game game = new Game();
+        for (Integer pin : pins) {
+            game.roll(pin);
+        }
+
+        assertEquals(result, game.score());
+    }
+
+    static Stream<Arguments> framesProvider() {
+        return Stream.of(
+                Arguments.of(List.of(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), 0),
+                Arguments.of(List.of(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 5, 5), 20),
+                Arguments.of(List.of(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5), 15),
+                Arguments.of(List.of(6, 1, 4, 6, 4, 6, 7, 3, 7, 3, 10, 10, 5, 4, 10, 1, 2), 144),
+                Arguments.of(List.of(6, 1, 4, 6, 4, 6, 7, 3, 7, 0, 10, 10, 5, 4, 10, 10, 7, 3), 162),
+                Arguments.of(List.of(10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10), 300)
+        );
     }
 }

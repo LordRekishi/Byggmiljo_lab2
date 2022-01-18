@@ -13,13 +13,18 @@ public class Game {
     public void roll(int pins) {
         if (rollCounter < MAX_ROLLS && pins <= MAX_PINS) {
             if (rollCounter == 18 && pins == MAX_PINS) {
+                MAX_ROLLS += 2;
+            }
+            if (rollCounter == 19 && rolls.get(rolls.size() - 1) + pins == 10) {
                 MAX_ROLLS++;
             }
             if (rolls.size() > 1) {
                 strike(pins);
                 spare(pins);
             }
-            rolls.add(pins);
+            if (rollCounter != 20) {
+                rolls.add(pins);
+            }
             rollCounter++;
         }
     }
@@ -35,7 +40,7 @@ public class Game {
     }
 
     private void spare(int pins) {
-        if (rolls.size() % 2 == 0) {
+        if (rollCounter % 2 == 0) {
             if (rolls.get(rolls.size() - 2) + rolls.get(rolls.size() - 1) == MAX_PINS) {
                 score += pins;
             }
