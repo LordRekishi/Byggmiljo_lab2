@@ -1,5 +1,7 @@
 package com.example.stringcalculator;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class StringCalculator {
@@ -11,7 +13,19 @@ public class StringCalculator {
             return 0;
         }
 
-        if (numbers.startsWith("//")) {
+        if (numbers.startsWith("//[")){
+            Pattern pattern = Pattern.compile("\\[.*?]");
+            Matcher matcher = pattern.matcher(numbers);
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            while (matcher.find()) {
+                stringBuilder.append(matcher.group(), 1, matcher.group().length() - 1).append("|");
+            }
+            stringBuilder.append("\n");
+
+            delimiter = stringBuilder.toString();
+        } else if (numbers.startsWith("//") && !numbers.startsWith("//[")) {
             delimiter = numbers.charAt(2) + "|\n";
         }
 

@@ -67,4 +67,11 @@ public class StringCalculatorTest {
 
         assertThat(result).isEqualTo(1005);
     }
+
+    @Test
+    void longDelimiterShouldReturnSix() {
+        int result = stringCalculator.add("//[***]\n1***2***3");
+
+        assertThat(result).isEqualTo(6);
+    }
 }
