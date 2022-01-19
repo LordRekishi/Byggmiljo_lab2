@@ -1,78 +1,92 @@
 package com.example.bowling;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.List;
 
 public class Game {
     private List<Frame> frames = new ArrayList<>();
     private final int MAX_PINS = 10;
+    private final int MAX_FRAMES = 10;
     private int score;
     private int rollCounter;
 
     public void roll(int pins) {
         Frame frame;
-        if (rollCounter == 0) {
-            frame = new Frame();
-            frame.setFirstRoll(pins);
-            frames.add(frame);
-            if (pins == MAX_PINS) {
+
+        if (pins <= MAX_PINS) {
+            if (rollCounter == 0 && frames.size() < MAX_FRAMES) {
+                frame = new Frame();
+                frame.setFirstRoll(pins);
+
+                if (pins == MAX_PINS) {
+                    if (frames.size() == 9) {
+                        frame.setStrike(true);
+                        rollCounter++;
+                    } else {
+                        frame.setStrike(true);
+                        rollCounter = 0;
+                    }
+                } else {
+                    rollCounter++;
+                }
+
+                if (frames.size() > 0) {
+                    if (getLastFrame().isStrike()) {
+                        getLastFrame().addFrameScore(frame.getFirstRoll());
+                    }
+                    if (getLastFrame().isSpare()) {
+                        getLastFrame().addFrameScore(frame.getFirstRoll());
+                    }
+                }
+                if (frames.size() > 1) {
+                    if (getSecondLastFrame().isStrike() && getLastFrame().isStrike()) {
+                        getSecondLastFrame().addFrameScore(frame.getFirstRoll());
+                    }
+                }
+
+                frame.addFrameScore(pins);
+                frames.add(frame);
+
+            } else if (rollCounter == 1 && frames.size() <= MAX_FRAMES) {
+                frame = getLastFrame();
+                frame.setSecondRoll(pins);
+
+                frame.addFrameScore(pins);
+
+                if (frame.getFirstRoll() + frame.getSecondRoll() == MAX_PINS) {
+                    frame.setSpare(true);
+                }
                 rollCounter = 0;
-            } else {
-                rollCounter++;
-            }
-        } else {
-            frame = frames.stream()
-                    .reduce((first, second) -> second).orElse(new Frame());
 
-            frame.setSecondRoll(pins);
-            rollCounter = 0;
+                if (frames.size() > 1) {
+                    if (getSecondLastFrame().isStrike()) {
+                        getSecondLastFrame().addFrameScore(frame.getSecondRoll());
+                    }
+                }
+
+                if (frame.isStrike() || frame.isSpare() && frames.size() == 10) {
+                    rollCounter = 2;
+                }
+            } else if (rollCounter == 2 && frames.size() <= MAX_FRAMES) {
+                frame = getLastFrame();
+                frame.setExtraRoll(pins);
+                frame.addFrameScore(pins);
+            }
         }
 
-
-
-
-
-
-        if (rollCounter < MAX_ROLLS && pins <= MAX_PINS) {
-            if (rollCounter == 18 && pins == MAX_PINS) {
-                MAX_ROLLS += 2;
-            }
-            if (rollCounter == 19 && rolls.get(rolls.size() - 1) + pins == 10) {
-                MAX_ROLLS++;
-            }
-            strike(pins);
-
-            rolls.add(pins);
-            rollCounter++;
-        }
     }
 
-    private void strike(int pins) {
-        if (pins == MAX_PINS) {
-            rollCounter++;
-        }
+    private Frame getLastFrame() {
+        return frames.get(frames.size() - 1);
+    }
+
+    private Frame getSecondLastFrame() {
+        return frames.get(frames.size() - 2);
     }
 
     public int score() {
-        int count = 0;
-        for (int i = 0; i < rollCounter; i++) {
-            if (count < 20) {
-                score += rolls.get(i);
-            }
-
-            if (count % 2 == 0) {
-                if (rolls.get(i) == 10) {
-                    score += rolls.get(i + 1) + rolls.get(i + 2);
-                    count++;
-                }
-
-                if (rolls.get(i) + rolls.get(i + 1) == 10) {
-                    score += rolls.get(i + 2);
-                }
-            }
-            count++;
+        for (Frame frame : frames) {
+            score += frame.getFrameScore();
         }
         return score;
     }
