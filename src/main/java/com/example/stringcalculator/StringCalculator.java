@@ -12,15 +12,17 @@ public class StringCalculator {
         if (numbers.equals("")) {
             return 0;
         }
-
-        if (numbers.startsWith("//[")){
+        if (numbers.startsWith("//[")) {
             Pattern pattern = Pattern.compile("\\[.*?]");
             Matcher matcher = pattern.matcher(numbers);
 
             StringBuilder stringBuilder = new StringBuilder();
 
             while (matcher.find()) {
-                stringBuilder.append(matcher.group(), 1, matcher.group().length() - 1).append("|");
+                stringBuilder.append("\\Q")
+                        .append(matcher.group(), 1, matcher.group().length() - 1)
+                        .append("\\E")
+                        .append("|");
             }
             stringBuilder.append("\n");
 
