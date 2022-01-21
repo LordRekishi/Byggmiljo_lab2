@@ -10,43 +10,50 @@ public class Game {
     private int rollCounter;
 
     public void roll(int pins) {
+        if (pins <= MAX_PINS) {
+            executeFrameDependingOnRoll(pins);
+        } else {
+            System.out.println("Invalid number of Pins, cancelling game...");
+        }
+    }
+
+    private void executeFrameDependingOnRoll(int pins) {
+        int MAX_FRAMES = 10;
         Frame frame;
 
-        if (pins <= MAX_PINS) {
-            int MAX_FRAMES = 10;
+        if (rollCounter == 0 && frames.size() < MAX_FRAMES) {
+            frame = new Frame();
+            frame.setFirstRoll(pins);
 
-            if (rollCounter == 0 && frames.size() < MAX_FRAMES) {
-                frame = new Frame();
-                frame.setFirstRoll(pins);
+            checkIfCurrentFrameIsStrike(pins, frame);
+            addScoreForStrikesAndSparesInEarlierFrames(frame);
 
-                if (isStrike(pins)) {
-                    setStrike(frame);
-                } else {
-                    rollCounter++;
-                }
+            frame.addFrameScore(pins);
+            frames.add(frame);
 
-                addScoreForStrikesAndSparesInEarlierFrames(frame);
+        } else if (rollCounter == 1 && frames.size() <= MAX_FRAMES) {
+            frame = getLastFrame();
+            frame.setSecondRoll(pins);
+            frame.addFrameScore(pins);
 
-                frame.addFrameScore(pins);
-                frames.add(frame);
+            checkIfSpare(frame);
 
-            } else if (rollCounter == 1 && frames.size() <= MAX_FRAMES) {
-                frame = getLastFrame();
-                frame.setSecondRoll(pins);
-                frame.addFrameScore(pins);
+            rollCounter = 0;
 
-                checkIfSpare(frame);
+            addScoreForStrikeInEarlierFrame(frame);
+            changeRollCounterForExtraRollForStrikeOrSpareInFrameTen(frame);
 
-                rollCounter = 0;
-
-                addScoreForStrikeInEarlierFrame(frame);
-                changeRollCounterForExtraRollForStrikeOrSpareInFrameTen(frame);
-
-            } else if (rollCounter == 2 && frames.size() <= MAX_FRAMES) {
-                extraRollOnFrameTen(pins);
-            }
+        } else if (rollCounter == 2 && frames.size() <= MAX_FRAMES) {
+            extraRollOnFrameTen(pins);
         }
+    }
 
+    private void checkIfCurrentFrameIsStrike(int pins, Frame frame) {
+        if (isStrike(pins)) {
+            setStrike(frame);
+        } else {
+            rollCounter++;
+        }
     }
 
     private boolean isStrike(int pins) {
