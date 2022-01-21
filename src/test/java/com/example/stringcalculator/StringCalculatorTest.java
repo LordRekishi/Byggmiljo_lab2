@@ -81,4 +81,11 @@ public class StringCalculatorTest {
 
         assertThat(result).isEqualTo(6);
     }
+
+    @Test
+    void multipleDelimitersWithLengthLongerThanOneCharacterShouldReturnSix() {
+        int result = stringCalculator.add("//[*****][%%%%%%%%]\n1*****2%%%%%%%%3");
+
+        assertThat(result).isEqualTo(6);
+    }
 }
