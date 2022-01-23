@@ -49,4 +49,13 @@ class EmployeeTest {
 
         assertThat(result).isFalse();
     }
+
+    @Test
+    @DisplayName("Set Paid from False to True")
+    void setPaidFromFalseToTrue() {
+        employee.setPaid(true);
+        var result = employee.isPaid();
+
+        assertThat(result).isTrue();
+    }
 }
