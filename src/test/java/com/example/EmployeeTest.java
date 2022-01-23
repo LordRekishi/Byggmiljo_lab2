@@ -33,4 +33,12 @@ class EmployeeTest {
         assertThat(result).isEqualTo(10000);
     }
 
+    @Test
+    @DisplayName("Set Salary should change from 10000 to 20000")
+    void setSalaryShouldChangeFrom10000To20000() {
+        employee.setSalary(20000);
+        var result = employee.getSalary();
+
+        assertThat(result).isEqualTo(20000);
+    }
 }
