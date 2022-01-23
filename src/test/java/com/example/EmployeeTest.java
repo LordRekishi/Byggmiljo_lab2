@@ -25,4 +25,12 @@ class EmployeeTest {
         assertThat(result).isEqualTo("2");
     }
 
+    @Test
+    @DisplayName("Get Salary should return 10000")
+    void getSalaryShouldReturn10000() {
+        var result = employee.getSalary();
+
+        assertThat(result).isEqualTo(10000);
+    }
+
 }
