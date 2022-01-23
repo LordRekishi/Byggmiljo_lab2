@@ -41,4 +41,12 @@ class EmployeeTest {
 
         assertThat(result).isEqualTo(20000);
     }
+
+    @Test
+    @DisplayName("Is Paid should return False")
+    void isPaidShouldReturnFalse() {
+        var result = employee.isPaid();
+
+        assertThat(result).isFalse();
+    }
 }
