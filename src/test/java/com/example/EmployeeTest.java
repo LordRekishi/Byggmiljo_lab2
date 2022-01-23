@@ -58,4 +58,12 @@ class EmployeeTest {
 
         assertThat(result).isTrue();
     }
+
+    @Test
+    @DisplayName("Test To String method")
+    void testToStringMethod() {
+        var result = employee.toString();
+
+        assertThat(result).isEqualTo("Employee [id=1, salary=10000.0]");
+    }
 }
