@@ -16,4 +16,13 @@ class EmployeeTest {
         assertThat(result).isEqualTo("1");
     }
 
+    @Test
+    @DisplayName("Set ID should change from One to Two")
+    void setIdShouldChangeFromOneToTwo() {
+        employee.setId("2");
+        var result = employee.getId();
+
+        assertThat(result).isEqualTo("2");
+    }
+
 }
