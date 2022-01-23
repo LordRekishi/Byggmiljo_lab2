@@ -16,11 +16,6 @@ public class EmployeeRepositoryStub implements EmployeeRepository {
 
     @Override
     public Employee save(Employee e) {
-        employees.stream()
-                .filter(employee -> employee.getId().equals(e.getId()))
-                .findFirst()
-                .ifPresentOrElse(employee -> employees.set(employees.indexOf(employee), e), () -> employees.add(e));
-
-        return e;
+        return null;
     }
 }
