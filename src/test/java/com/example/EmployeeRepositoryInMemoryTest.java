@@ -33,4 +33,13 @@ class EmployeeRepositoryInMemoryTest {
         assertThat(result).isEqualTo(4);
     }
 
+    @Test
+    @DisplayName("Add Employee with same ID Should return updated salary")
+    void addEmployeeWithSameIdShouldReturnUpdatedSalary() {
+        employeeRepository.save(new Employee("1", 3000));
+        var result = employeeRepository.findAll().get(0).getSalary();
+
+        assertThat(result).isEqualTo(3000);
+    }
+
 }
