@@ -8,8 +8,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 class EmployeeManagerTest {
     EmployeeRepository employeeRepository = new EmployeeRepositoryStub(List.of(
@@ -33,6 +32,7 @@ class EmployeeManagerTest {
 
         employeeManager.payEmployees();
 
+        verify(bankService, times(2)).pay(anyString(), anyDouble());
         assertThat(employeeRepository.findAll().get(0).isPaid()).isFalse();
     }
 }

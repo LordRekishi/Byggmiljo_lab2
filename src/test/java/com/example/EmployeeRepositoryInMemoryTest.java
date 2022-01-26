@@ -17,6 +17,16 @@ class EmployeeRepositoryInMemoryTest {
     EmployeeRepository employeeRepository = new EmployeeRepositoryInMemory(employees);
 
     @Test
+    @DisplayName("Test Find All with empty List should return Zero")
+    void testFindAllWithEmptyListShouldReturnZero() {
+        EmployeeRepository employeeRepository = new EmployeeRepositoryInMemory(List.of());
+
+        var result = employeeRepository.findAll().size();
+
+        assertThat(result).isEqualTo(0);
+    }
+
+    @Test
     @DisplayName("Test Find All Method should return Three")
     void testFindAllMethodShouldReturnThree() {
         var result = employeeRepository.findAll().size();
@@ -34,12 +44,16 @@ class EmployeeRepositoryInMemoryTest {
     }
 
     @Test
-    @DisplayName("Add Employee with same ID Should return updated salary")
+    @DisplayName("Add Employee with same ID Should update to new Employee")
     void addEmployeeWithSameIdShouldReturnUpdatedSalary() {
+        var oldEmployee = employeeRepository.findAll().get(0);
+
         employeeRepository.save(new Employee("1", 3000));
-        var result = employeeRepository.findAll().get(0).getSalary();
 
-        assertThat(result).isEqualTo(3000);
+        Employee newEmployee = employeeRepository.findAll().get(0);
+        var list = employeeRepository.findAll();
+
+        assertThat(newEmployee).isNotEqualTo(oldEmployee);
+        assertThat(list).contains(newEmployee).doesNotContain(oldEmployee);
     }
-
 }

@@ -23,29 +23,37 @@ public class Game {
 
         if (rollCounter == 0 && frames.size() < MAX_FRAMES) {
             frame = new Frame();
-            frame.setFirstRoll(pins);
-
-            checkIfCurrentFrameIsStrike(pins, frame);
-            addScoreForStrikesAndSparesInEarlierFrames(frame);
-
-            frame.addFrameScore(pins);
-            frames.add(frame);
+            executeRollOne(pins, frame);
 
         } else if (rollCounter == 1 && frames.size() <= MAX_FRAMES) {
             frame = getLastFrame();
-            frame.setSecondRoll(pins);
-            frame.addFrameScore(pins);
-
-            checkIfSpare(frame);
-
-            rollCounter = 0;
-
-            addScoreForStrikeInEarlierFrame(frame);
-            changeRollCounterForExtraRollForStrikeOrSpareInFrameTen(frame);
+            executeRollTwo(pins, frame);
 
         } else if (rollCounter == 2 && frames.size() <= MAX_FRAMES) {
             extraRollOnFrameTen(pins);
         }
+    }
+
+    private void executeRollOne(int pins, Frame frame) {
+        frame.setFirstRoll(pins);
+
+        checkIfCurrentFrameIsStrike(pins, frame);
+        addScoreForStrikesAndSparesInEarlierFrames(frame);
+
+        frame.addFrameScore(pins);
+        frames.add(frame);
+    }
+
+    private void executeRollTwo(int pins, Frame frame) {
+        frame.setSecondRoll(pins);
+        frame.addFrameScore(pins);
+
+        checkIfSpare(frame);
+
+        rollCounter = 0;
+
+        addScoreForStrikeInEarlierFrame(frame);
+        changeRollCounterForExtraRollForStrikeOrSpareInFrameTen(frame);
     }
 
     private void checkIfCurrentFrameIsStrike(int pins, Frame frame) {
