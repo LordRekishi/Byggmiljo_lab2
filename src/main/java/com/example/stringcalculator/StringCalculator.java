@@ -5,33 +5,31 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class StringCalculator {
+    private String delimiter = ",|\n";
 
     public int add(String numbers) {
-        String delimiter = ",|\n";
 
         if (numbers.equals("")) {
             return 0;
         }
 
-        delimiter = setDelimiterIfNotDefault(numbers, delimiter);
-        checkForNegatives(numbers, delimiter);
+        setDelimiterIfNotDefault(numbers);
+        checkForNegatives(numbers);
 
-        return getSum(numbers, delimiter);
+        return getSum(numbers);
     }
 
-    private String setDelimiterIfNotDefault(String numbers, String delimiter) {
+    private void setDelimiterIfNotDefault(String numbers) {
         if (numbers.startsWith("//[")) {
             Pattern pattern = Pattern.compile("\\[.*?]");
             Matcher matcher = pattern.matcher(numbers);
-            delimiter = buildDelimiterString(matcher);
+            buildDelimiterString(matcher);
         } else if (numbers.startsWith("//")) {
             delimiter = numbers.charAt(2) + "|\n";
         }
-        return delimiter;
     }
 
-    private String buildDelimiterString(Matcher matcher) {
-        String delimiter;
+    private void buildDelimiterString(Matcher matcher) {
         StringBuilder stringBuilder = new StringBuilder();
 
         while (matcher.find()) {
@@ -43,17 +41,16 @@ public class StringCalculator {
         stringBuilder.append("\n");
 
         delimiter = stringBuilder.toString();
-        return delimiter;
     }
 
-    private void checkForNegatives(String numbers, String delimiter) {
+    private void checkForNegatives(String numbers) {
         if (numbers.contains("-")) {
-            StringBuilder negatives = getStringOfNegatives(numbers, delimiter);
+            StringBuilder negatives = getStringOfNegatives(numbers);
             throw new RuntimeException("Negatives " + negatives + " not allowed");
         }
     }
 
-    private StringBuilder getStringOfNegatives(String numbers, String delimiter) {
+    private StringBuilder getStringOfNegatives(String numbers) {
         StringBuilder negatives = new StringBuilder();
 
         negatives.append("( ");
@@ -65,7 +62,7 @@ public class StringCalculator {
         return negatives;
     }
 
-    private int getSum(String numbers, String delimiter) {
+    private int getSum(String numbers) {
         return Stream.of(numbers.split(delimiter))
                 .filter(this::isNumeric)
                 .mapToInt(Integer::parseInt)
